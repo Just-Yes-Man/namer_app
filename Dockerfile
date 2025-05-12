@@ -1,4 +1,4 @@
-FROM cirrusci/flutter:3.29.3 AS build  # Versión específica
+FROM cirrusci/flutter:3.29.3 AS build  
 
 WORKDIR /app
 COPY . .
