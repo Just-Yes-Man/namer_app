@@ -32,8 +32,4 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/flutter-app:${{ github.sha }}
 
-    - name: Trigger Render deployment
-      run: |
-        curl -X POST https://api.render.com/deploy/success \
-        -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-        -d '{"serviceId": "your-service-id"}'
+    
