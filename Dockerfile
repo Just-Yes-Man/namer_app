@@ -1,4 +1,4 @@
-FROM flutter/flutter:stable AS build
+FROM fischerscode/flutter AS build
 
 
 WORKDIR /app
