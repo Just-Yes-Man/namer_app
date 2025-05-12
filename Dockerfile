@@ -1,13 +1,18 @@
-# Dockerfile
+
+FROM cirrusci/flutter:stable
 
 
-FROM nginx:alpine
+WORKDIR /app
 
 
-RUN rm -rf /usr/share/nginx/html/*
+COPY . .
 
-COPY build/web /usr/share/nginx/html
+RUN flutter pub get
 
-EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+RUN flutter build web
+
+EXPOSE 5000
+
+
+CMD ["flutter", "run", "-d", "web-server", "--web-port=5000"]
