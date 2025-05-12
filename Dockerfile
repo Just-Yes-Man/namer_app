@@ -1,18 +1,19 @@
-# Usa la imagen oficial de Flutter
-FROM cirrusci/flutter:latest
+# Etapa 1: Construcción de la app Flutter Web
+FROM cirrusci/flutter:stable AS build
 
-# Establece el directorio de trabajo
 WORKDIR /app
-
-# Copia los archivos de tu proyecto Flutter
 COPY . .
 
-# Instala las dependencias
 RUN flutter pub get
+RUN flutter build web
 
-# Compila la app Flutter
-RUN flutter build apk --release
+# Etapa 2: Servidor web (nginx)
+FROM nginx:alpine
 
+COPY --from=build /app/build/web /usr/share/nginx/html
 
-# Define el comando por defecto (si aplica)
-CMD ["flutter", "run"]
+# Opcional: reemplazar el archivo default.conf si necesitas configuración especial
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
