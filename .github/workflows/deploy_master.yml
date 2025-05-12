@@ -16,7 +16,7 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.13.0'  # Cambia a la versión que uses
+        flutter-version: '3.13.0'
 
     - name: Flutter pub get
       run: flutter pub get
@@ -41,4 +41,4 @@ jobs:
       with:
         context: ./docker-context
         push: true
-        tags: yourdockerhubuser/yourflutterapp:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/namer_app:${{ github.sha }} 
