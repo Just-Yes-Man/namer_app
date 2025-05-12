@@ -1,17 +1,18 @@
-# Etapa 1: Compilar Flutter Web
-FROM cirrusci/flutter:stable AS build
+FROM ubuntu:20.04 as build
+
+RUN apt-get update && apt-get install -y curl git unzip xz-utils zip libglu1-mesa && \
+    curl -O https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.13.6-stable.tar.xz && \
+    tar xf flutter_linux_3.13.6-stable.tar.xz && \
+    flutter/bin/flutter doctor
+
+ENV PATH="/flutter/bin:/flutter/bin/cache/dart-sdk/bin:${PATH}"
 
 WORKDIR /app
 COPY . .
 
 RUN flutter pub get
 RUN flutter build web
-RUN ls -l build/web  # Comprobación
 
-# Etapa 2: Nginx para servir archivos estáticos
+# Serve stage
 FROM nginx:alpine
-
 COPY --from=build /app/build/web /usr/share/nginx/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
