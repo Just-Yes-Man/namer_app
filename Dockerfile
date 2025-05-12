@@ -1,4 +1,4 @@
-FROM fischerscode/flutter AS build
+FROM cirrusci/flutter:latest
 
 
 WORKDIR /app
