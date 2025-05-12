@@ -10,22 +10,19 @@ RUN apt-get update && apt-get install -y \
     zip \
     libglu1-mesa
 
-# Descargar e instalar Flutter SDK
-RUN curl -o flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.13.6-stable.tar.xz \
-    && tar xf flutter.tar.xz \
-    && rm flutter.tar.xz \
-    && mv flutter /usr/local/flutter
+# Descargar Flutter estable
+RUN curl -O https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.13.6-stable.tar.xz && \
+    tar xf flutter_linux_3.13.6-stable.tar.xz
 
-# Configurar el PATH
-ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
+ENV PATH="/flutter/bin:/flutter/bin/cache/dart-sdk/bin:${PATH}"
 
-# Verificar instalación
+# Verifica la instalación
 RUN flutter doctor
 
 WORKDIR /app
 COPY . .
 
-# Ejecutar flutter pub get y construir la aplicación
+# Instalar dependencias
 RUN flutter pub get
 RUN flutter build web
 
