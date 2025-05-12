@@ -1,14 +1,13 @@
-# Etapa 1: Compilar Flutter Web
-FROM cirrusci/flutter:stable AS build
+FROM cirrusci/flutter:3.29.3 AS build  # Versión específica
 
 WORKDIR /app
 COPY . .
 
 RUN flutter pub get
 RUN flutter build web
-RUN ls -l build/web  # Comprobación
+RUN ls -l build/web  # Verificación
 
-# Etapa 2: Nginx para servir archivos estáticos
+# Nginx para servir la app
 FROM nginx:alpine
 
 COPY --from=build /app/build/web /usr/share/nginx/html
